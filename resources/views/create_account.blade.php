@@ -9,6 +9,13 @@
                         <h3 style='color:#436e99'>Create account</h3>
                     </div>
 
+                    {{-- show create_error --}}
+                    @if (session('create_error'))
+                        <div class="alert alert-secondary text-center">
+                            {{ session('create_error') }}
+                        </div>
+                    @endif
+
                     <!-- form -->
                     <div class="row justify-content-center">
                         <div class="col-md-10 col-12">
