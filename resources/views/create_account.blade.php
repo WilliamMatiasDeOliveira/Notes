@@ -22,20 +22,20 @@
                             <form action="{{ route('check_account') }}" method="post">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="text_username" class="form-label">Username</label>
-                                    <input type="text" class="form-control bg-dark text-info" name="text_username">
+                                    <label for="create_username" class="form-label">Username</label>
+                                    <input type="text" class="form-control bg-dark text-info" name="create_username">
                                     {{-- show message --}}
-                                    @error('text_username')
+                                    @error('create_username')
                                         <div class="text-danger">
                                             {{ $message }}
                                         </div>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="text_password" class="form-label">Password</label>
-                                    <input type="password" class="form-control bg-dark text-info" name="text_password">
+                                    <label for="create_password" class="form-label">Password</label>
+                                    <input type="password" class="form-control bg-dark text-info" name="create_password">
                                     {{-- show message --}}
-                                    @error('text_password')
+                                    @error('create_password')
                                         <div class="text-danger">
                                             {{ $message }}
                                         </div>

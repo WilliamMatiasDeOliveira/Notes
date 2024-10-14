@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
 
-    public function index()
-    {
-        return view('index');
-    }
-
     public function login()
     {
         return view('login');
@@ -75,21 +70,25 @@ class AuthController extends Controller
 
     }
 
+    public function create_account(){
+        return view('create_account');
+    }
+
     public function check_account(Request $request)
     {
         $request->validate(
             // rules
             [
-                'text_username' => 'required|string',
-                'text_password' => 'required|min:6|max:16',
-                'confirm_password' => 'required|same:text_password|min:6|max:16'
+                'create_username' => 'required|string',
+                'create_password' => 'required|min:6|max:16',
+                'confirm_password' => 'required|same:create_password|min:6|max:16'
             ],
             // messages 
             [
-                'text_username.required' => 'Este campo é obrigatório',
-                'text_password.required' => 'Este campo é obrigatório',
-                'text_password.min' => 'A senha deve ter no mínimo :min caracteres',
-                'text_password.max' => 'A senha deve ter no máximo :max caracteres',
+                'create_username.required' => 'Este campo é obrigatório',
+                'create_password.required' => 'Este campo é obrigatório',
+                'create_password.min' => 'A senha deve ter no mínimo :min caracteres',
+                'create_password.max' => 'A senha deve ter no máximo :max caracteres',
                 'confirm_password.required' => 'É necessário confirmar a senha',
                 'confirm_password.same' => 'As senhas devem ser iguais',
                 'confirm_password.min' => 'A senha de confirmação deve ter no mínimo :min caracteres',
@@ -97,8 +96,8 @@ class AuthController extends Controller
             ]
         );
 
-        $username = $request->input('text_username');
-        $password = $request->input('text_password');
+        $username = $request->input('create_username');
+        $password = $request->input('create_password');
 
         // verifica se já existe este user cadastrado
         $user = User::where('username', $username)
@@ -123,5 +122,11 @@ class AuthController extends Controller
 
         $msg = 'Usuário cadastrado com sucesso';
         return redirect('login')->with('success', $msg);
+    }
+
+    public function logout()
+    {
+        session()->forget('user');
+        return redirect('login');
     }
 }
