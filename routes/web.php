@@ -14,13 +14,13 @@ Route::middleware([CheckIsNotLogged::class])->group(function () {
     Route::get('create_account', [AuthController::class, 'create_account'])->name('create_account');
     Route::post('check_account', [AuthController::class, 'check_account'])->name('check_account');
 });
-    
+
 
 
 Route::middleware([CheckIsLogged::class])->group(function (){
 
     // route user logged
-    Route::get('/', [MainController::class, 'index'])->name('home');  
+    Route::get('/', [MainController::class, 'index'])->name('home');
     Route::get('new_note', [MainController::class, 'new_note'])->name('new_note');
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
