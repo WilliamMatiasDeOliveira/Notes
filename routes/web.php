@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
 use App\Http\Middleware\CheckIsLogged;
 use App\Http\Middleware\CheckIsNotLogged;
+use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware([CheckIsNotLogged::class])->group(function () {
@@ -22,7 +23,8 @@ Route::middleware([CheckIsLogged::class])->group(function (){
     // route user logged
     Route::get('/', [MainController::class, 'index'])->name('home');
     Route::get('new_note', [MainController::class, 'new_note'])->name('new_note');
+    Route::post('new_note_submit', [MainController::class, 'new_note_submit'])->name('new_note_submit');
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('edit/', [MainController::class, 'edit'])->name('edit');
-    Route::get('delete', [MainController::class, 'delete'])->name('delete');
+    Route::get('edit/{id}', [MainController::class, 'edit'])->name('edit');
+    Route::get('delete/{id}', [MainController::class, 'delete'])->name('delete');
 });

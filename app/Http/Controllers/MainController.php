@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class MainController extends Controller
 {
@@ -23,17 +25,36 @@ class MainController extends Controller
 
     public function new_note()
     {
-        echo 'new note';
+       return view('new_note');
+    }
+
+    public function new_note_submit(){
+        return view('new_note_submit');
     }
 
     public function edit($id)
     {
-        echo 'edit';
+       try {
+           $id = Crypt::decrypt($id);
+       } catch (DecryptException $e) {
+            return redirect('home');
+       }
+
     }
 
     public function delete($id)
     {
-        echo 'delete';
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (DecryptException $e) {
+             return redirect('home');
+        }
+
+        $user = User::find($id);
+        User::deleted($user);
+
+        return redirect('/');
+
     }
 
 
