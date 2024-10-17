@@ -3,15 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use PhpParser\Builder\Use_;
 
 class AuthController extends Controller
 {
 
     public function login()
     {
-        return view('login');
+        if(session('user')){
+            return redirect('/');
+        }
+        // return view('login');
+        return response()
+        ->view('login')
+        ->header('Cache-Control', 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0')
+        ->header('Pragma', 'no-cache')
+        ->header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
     }
 
     public function login_submit(Request $request)
@@ -22,7 +32,7 @@ class AuthController extends Controller
                 'text_username' => 'required|string',
                 'text_password' => 'required|min:6|max:16'
             ],
-            // messages 
+            // messages
             [
                 'text_username.required' => 'Este campo é obrigatório',
                 'text_password.required' => 'Este campo é obrigatório',
@@ -83,7 +93,7 @@ class AuthController extends Controller
                 'create_password' => 'required|min:6|max:16',
                 'confirm_password' => 'required|same:create_password|min:6|max:16'
             ],
-            // messages 
+            // messages
             [
                 'create_username.required' => 'Este campo é obrigatório',
                 'create_password.required' => 'Este campo é obrigatório',
