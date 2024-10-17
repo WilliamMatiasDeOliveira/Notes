@@ -28,8 +28,24 @@ class MainController extends Controller
        return view('new_note');
     }
 
-    public function new_note_submit(){
-        return view('new_note_submit');
+    public function new_note_submit(Request $request){
+        $request->validate(
+            // rules
+            [
+                'text_title'=>'required|min:3|max:200',
+                'text_note'=>'required|min:3|max:3000',
+            ],
+            // messages
+            [
+                'text_title.required'=>'Este campo é obrigatório',
+                'text_title.min'=>'O titulo tem que ter no minimo :min caractéres',
+                'text_title.max'=>'O titulo tem que ter no maximo :max caractéres',
+
+                'text_note.required'=>'Este campo é obrigatório',
+                'text_note.min'=>'O texto tem que ter no minimo :min caractéres',
+                'text_note.max'=>'O texto tem que ter no maximo :max caractéres'
+            ]
+        );
     }
 
     public function edit($id)
