@@ -8,8 +8,9 @@
             {{-- top bar --}}
          @include('layouts.top_bar')
 
+          <!-- no notes available -->
          @if ($notes == NULL)
-            <!-- no notes available -->
+
             <div class="row mt-5">
                 <div class="col text-center">
                     <p class="display-6 mb-5 text-secondary opacity-50">You have no notes available!</p>
@@ -21,15 +22,14 @@
             </div>
          @else
 
-            <!-- notes are available -->
-
+         <!-- notes are available -->
             {{-- botão new note --}}
                 <div class="d-flex justify-content-end mb-3">
                     <a href="{{ route('new_note') }}" class="btn btn-secondary px-3">
                         <i class="fa-regular fa-pen-to-square me-2"></i>New Note
                     </a>
                 </div>
-
+                
             @foreach ($notes as $note)
                 <div class="row">
                     <div class="col">
