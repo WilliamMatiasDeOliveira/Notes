@@ -21,11 +21,20 @@ class MainController extends Controller
 
     }
 
-    public function new_note(){
+    public function new_note()
+    {
         echo 'new note';
     }
 
+    public function edit($id)
+    {
+        echo 'edit';
+    }
 
+    public function delete($id)
+    {
+        echo 'delete';
+    }
 
 
 

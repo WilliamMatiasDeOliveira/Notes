@@ -23,4 +23,6 @@ Route::middleware([CheckIsLogged::class])->group(function (){
     Route::get('/', [MainController::class, 'index'])->name('home');
     Route::get('new_note', [MainController::class, 'new_note'])->name('new_note');
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('edit/', [MainController::class, 'edit'])->name('edit');
+    Route::get('delete', [MainController::class, 'delete'])->name('delete');
 });
