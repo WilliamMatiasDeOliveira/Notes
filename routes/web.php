@@ -32,4 +32,5 @@ Route::middleware([CheckIsLogged::class])->group(function (){
     Route::post('edit_submit', [MainController::class, 'edit_submit'])->name('edit_submit');
     // delete note
     Route::get('delete/{id}', [MainController::class, 'delete'])->name('delete');
+    Route::get('delete_confirm/{id}',[MainController::class, 'delete_confirm'])->name('delete_confirm');
 });

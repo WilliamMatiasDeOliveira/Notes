@@ -18,7 +18,11 @@ class MainController extends Controller
         $id = session('user.id');
         // Este comando esta colocando dentro de $notes todas as notas relacionadas com users
         // EX: User busca todas as notas que estão relacionadas com este $id na tabela notes
-        $notes = User::find($id)->notes()->get()->toArray();
+        $notes = User::find($id)
+                        ->notes()
+                        ->where('deleted_at', NULL)
+                        ->get()
+                        ->toArray();
 
         return view('home', ['notes'=>$notes]);
 
@@ -57,18 +61,14 @@ class MainController extends Controller
         $note->text = $request->text_note;
         $note->save();
 
-       return redirect()->route('home')->with('note_success', 'Nota inserida com sucesso !');
+        $msg = 'Nota inserida com sucesso !';
+        return redirect()->route('home')->with('new_note_success', $msg);
 
     }
 
     public function edit($id)
     {
-       try {
-        // captura o id e devolve desencriptado
-           $id = Crypt::decrypt($id);
-       } catch (DecryptException $e) {
-            return redirect()->route('home');
-       }
+       $id = $this->decrypt($id);
     //    buscar a nota a ser editada
        $note = Note::find($id);
     // carregar a nota a ser editada
@@ -100,12 +100,7 @@ class MainController extends Controller
             return redirect()->route('home');
         }
         // decrypt note_id
-        try {
-            // captura o id e devolve desencriptado
-               $id = Crypt::decrypt($request->note_id);
-           } catch (DecryptException $e) {
-                return redirect()->route('home');
-           }
+        $id = decrypt($request->note_id);
         // carregar a nota
         $note = Note::find($id);
         // atualizar a nota
@@ -113,7 +108,8 @@ class MainController extends Controller
         $note->text = $request->text_note;
         $note->save();
         // redirect to home
-        return redirect()->route('home');
+        $msg = 'Nota editada com sucesso';
+        return redirect()->route('home')->with('edit_success', $msg);
 
 
 
@@ -125,17 +121,42 @@ class MainController extends Controller
     public function delete($id)
     {
         // captura o id e devolve desencriptado
+        $id = $this->decrypt($id);
+        // carregar a nota a ser deletada
+        $note = Note::find($id);
+        // mostrar delete_confirm
+        return view('delete_note', ['note'=>$note]);
+
+    }
+
+    public function delete_confirm($id)
+    {
+        $id = $this->decrypt($id);
+        // carregar a nota
+        $note = Note::find($id);
+
+        // HARD DELETE
+        // $note->delete();
+
+        // SOFT DELETE
+        $note->deleted_at = date('Y-m-d H:i:s');
+        $note->save();
+
+        $msg = 'Nota deletada com sucesso !';
+        return redirect()->route('home')->with('delete_success', $msg);
+
+    }
+
+    // função privada para desencryptar o id
+    private function decrypt($id)
+    {
         try {
-            $id = Crypt::decrypt($id);
-        } catch (DecryptException $e) {
-             return redirect('home');
-        }
-
-        $user = User::find($id);
-        User::deleted($user);
-
-        return redirect('/');
-
+            // captura o id e devolve desencriptado
+               $id = Crypt::decrypt($id);
+           } catch (DecryptException $e) {
+                return redirect()->route('home');
+           }
+           return $id;
     }
 
 

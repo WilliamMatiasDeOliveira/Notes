@@ -13,10 +13,33 @@
 
                     {{-- show message success --}}
                     @if (session('success'))
-                        <div class="alert alert-success text-center text-black">
+                        <div id='success' class="alert alert-success text-center text-black">
                             {{ session('success') }}
                         </div>
                     @endif
+
+                      {{-- setTimeOut para a menssagem sumir após 3 segundos --}}
+                      <script>
+                        // Aguarda o carregamento completo da página
+                        window.onload = function() {
+                            // Encontra o elemento da mensagem
+                            var successMessage = document.getElementById('success');
+
+                            // Se a mensagem existir, define o tempo para removê-la
+                            if (successMessage) {
+                                setTimeout(function() {
+                                    // Adiciona uma transição de fade-out para a mensagem
+                                    successMessage.style.transition = 'opacity 0.5s ease';
+                                    successMessage.style.opacity = '0';
+
+                                    // Remove o elemento após a transição
+                                    setTimeout(function() {
+                                        successMessage.remove();
+                                    }, 500); // 500ms para coincidir com a transição
+                                }, 3000); // 3000ms (3 segundos) antes de iniciar o fade-out
+                            }
+                        }
+                    </script>
 
                     <!-- form -->
                     <div class="row justify-content-center">
@@ -52,7 +75,7 @@
                     </div>
                     {{-- show login error --}}
                     @if (session('login_error'))
-                        <div class="alert alert-danger text-center">
+                        <div id='login_error' class="alert alert-danger text-center">
                             {{ session('login_error') }}
                         </div>
                     @endif
