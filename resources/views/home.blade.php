@@ -29,7 +29,13 @@
                         <i class="fa-regular fa-pen-to-square me-2"></i>New Note
                     </a>
                 </div>
-                
+                {{-- message seccess new note --}}
+                @if (session('note_success'))
+                        <div class="alert alert-success text-center text-black">
+                            {{ session('note_success') }}
+                        </div>
+                    @endif
+
             @foreach ($notes as $note)
                 <div class="row">
                     <div class="col">

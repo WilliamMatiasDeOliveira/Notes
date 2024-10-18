@@ -57,22 +57,74 @@ class MainController extends Controller
         $note->text = $request->text_note;
         $note->save();
 
-       return redirect()->route('home');
+       return redirect()->route('home')->with('note_success', 'Nota inserida com sucesso !');
 
     }
 
     public function edit($id)
     {
        try {
+        // captura o id e devolve desencriptado
            $id = Crypt::decrypt($id);
        } catch (DecryptException $e) {
-            return redirect('home');
+            return redirect()->route('home');
        }
+    //    buscar a nota a ser editada
+       $note = Note::find($id);
+    // carregar a nota a ser editada
+       return view('edit', ['note'=>$note]);
+
+    }
+
+    public function edit_submit(Request $request)
+    {
+        $request->validate(
+            // rules
+            [
+                'text_title'=>'required|min:3|max:200',
+                'text_note'=>'required|min:3|max:3000',
+            ],
+            // messages
+            [
+                'text_title.required'=>'Este campo é obrigatório',
+                'text_title.min'=>'O titulo tem que ter no minimo :min caractéres',
+                'text_title.max'=>'O titulo tem que ter no maximo :max caractéres',
+
+                'text_note.required'=>'Este campo é obrigatório',
+                'text_note.min'=>'O texto tem que ter no minimo :min caractéres',
+                'text_note.max'=>'O texto tem que ter no maximo :max caractéres'
+            ]
+        );
+        // check if note_id exist
+        if(!$request->note_id){
+            return redirect()->route('home');
+        }
+        // decrypt note_id
+        try {
+            // captura o id e devolve desencriptado
+               $id = Crypt::decrypt($request->note_id);
+           } catch (DecryptException $e) {
+                return redirect()->route('home');
+           }
+        // carregar a nota
+        $note = Note::find($id);
+        // atualizar a nota
+        $note->title = $request->text_title;
+        $note->text = $request->text_note;
+        $note->save();
+        // redirect to home
+        return redirect()->route('home');
+
+
+
+
+
 
     }
 
     public function delete($id)
     {
+        // captura o id e devolve desencriptado
         try {
             $id = Crypt::decrypt($id);
         } catch (DecryptException $e) {

@@ -4,7 +4,7 @@
         <div class="row justify-content-center">
             <div class="col-md-6 col-sm-8">
                 <div class="card p-5">
-            
+
                     <div class="text-center">
                         <h3 style='color:#436e99'>Create account</h3>
                     </div>
@@ -23,7 +23,8 @@
                                 @csrf
                                 <div class="mb-3">
                                     <label for="create_username" class="form-label">Username</label>
-                                    <input type="text" class="form-control bg-dark text-info" name="create_username">
+                                    <input type="text" class="form-control bg-dark text-info" name="create_username"
+                                    value="{{old('create_username')}}">
                                     {{-- show message --}}
                                     @error('create_username')
                                         <div class="text-danger">
@@ -33,7 +34,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="create_password" class="form-label">Password</label>
-                                    <input type="password" class="form-control bg-dark text-info" name="create_password">
+                                    <input type="password" class="form-control bg-dark text-info" name="create_password"
+                                    value="{{old('create_password')}}">
                                     {{-- show message --}}
                                     @error('create_password')
                                         <div class="text-danger">
